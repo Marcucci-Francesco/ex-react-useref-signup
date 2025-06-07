@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 const numbers = "0123456789";
@@ -7,15 +7,21 @@ const symbols = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
 
 const Main = () => {
 
-  const [fullName, setFullName] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  const [specialization, setSpecialization] = useState('');
-  const [experience, setExperience] = useState('');
   const [description, setDescription] = useState('');
+
+  const fullNameRef = useRef();
+  const specializationRef = useRef();
+  const experienceRef = useRef();
 
   const handlerSubmit = (e) => {
     e.preventDefault()
+
+    const fullName = fullNameRef.current.value;
+    const specialization = specializationRef.current.value;
+    const experience = experienceRef.current.value;
+
     if (!fullName.trim() || !userName.trim() || !password.trim() || !specialization.trim() || !experience.trim() || !description.trim() || !isUsernameValid || !isPasswordValid || !isDescriptionValid) {
       alert('Tutti i campi sono obbligatori!')
       return
@@ -59,8 +65,7 @@ const Main = () => {
             <p>Nome completo</p>
             <input
               type="text"
-              value={fullName}
-              onChange={(e) => { setFullName(e.target.value) }}
+              ref={fullNameRef}
               className="form-control" />
           </label>
           <label className="form-label mx-4 col-3 mb-4">
@@ -92,8 +97,7 @@ const Main = () => {
           <label className="form-label col-3 mb-4">
             <p>Specializzazione</p>
             <select
-              value={specialization}
-              onChange={e => { setSpecialization(e.target.value) }}
+              ref={specializationRef}
               className='form-select'
             >
               <option value="">Seleziona...</option>
@@ -106,8 +110,7 @@ const Main = () => {
             <p>Anni di esperienza</p>
             <input
               type="number"
-              value={experience}
-              onChange={(e) => { setExperience(e.target.value) }}
+              ref={experienceRef}
               className="form-control" />
           </label>
           <label className="form-label col-10 mb-4">
